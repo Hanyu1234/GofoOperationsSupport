@@ -161,23 +161,21 @@
   </div>
 
   <script>
-    const data = {
-      1: {
-        title: "欢迎使用本工具",
-        desc: "这是一个示例页面，展示如何在单个网页中使用多个按钮切换内容。",
-        html: `欢迎来到单界面多按钮示例页面。<br />
-              - 左侧有多个按钮，每个对应一块不同的内容。<br />
-              - 你可以根据自己的业务，把这些按钮改成「功能一、功能二、查询、下载」等。<br />
-              - 右侧区域则展示对应的说明或结果。`
-      },
-      2: {
-        title: "使用说明",
-        desc: "下面是你可以如何基于这个模板定制自己的功能。",
-        html: `1. 修改按钮文字：直接在 HTML 中搜索“按钮 1 / 按钮 2 ...”，改成你想要的标题。<br />
-              2. 修改右侧内容：在 JavaScript 的 data 对象里，修改对应的 title / desc / html。<br />
-              3. 添加或删除按钮：复制或删除一个 <code>&lt;button&gt;</code> 元素，并在 data 中添加/删除对应条目。<br />
-              4. 最后把整个文件上传到 GitHub，开启 GitHub Pages 即可对外访问。`
-      },
+    // 按钮对应的外部链接：
+    // 1 号按钮：README 中的 网址1（飞书表单）
+    // 2 号按钮：README 中的 网址2（ChatGPT 对话）
+    const links = {
+      1: "https://acnjh1thgeif.feishu.cn/share/base/form/shrcnDuli8cppRiufsQ1oEhxiCf?from_chat=oc_%E7%BE%A4ID&from=plus_menu_p2p&bdp_launch_query=%7B%22__trigger_id__%22%3A%229df6f0d444adf28aa4d59a933b002834%22%2C%22required_launch_ability%22%3A%22chat_action%22%7D",
+      2: "https://chatgpt.com/c/69b9521b-55a4-832d-acb8-ac856a56b15d"
+    };
+
+    const buttons = document.querySelectorAll(".btn");
+    const titleEl = document.getElementById("content-title");
+    const descEl = document.getElementById("content-desc");
+    const boxEl = document.getElementById("content-box");
+
+    // 默认内容保持不变，仅提示用户点击左侧按钮
+    const defaultData = {
       3: {
         title: "示例操作",
         desc: "这里可以展示一个简单的“操作步骤”或“结果展示”。",
@@ -198,19 +196,21 @@
       }
     };
 
-    const buttons = document.querySelectorAll(".btn");
-    const titleEl = document.getElementById("content-title");
-    const descEl = document.getElementById("content-desc");
-    const boxEl = document.getElementById("content-box");
-
     buttons.forEach(btn => {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-id");
 
+        // 1、2 号按钮：直接跳转到外部链接（新窗口打开）
+        if (links[id]) {
+          window.open(links[id], "_blank");
+          return;
+        }
+
+        // 3、4 号按钮：在右侧区域展示说明文字
         buttons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
 
-        const item = data[id];
+        const item = defaultData[id];
         if (item) {
           titleEl.textContent = item.title;
           descEl.textContent = item.desc;
